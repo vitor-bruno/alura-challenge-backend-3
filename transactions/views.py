@@ -1,5 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .forms import ArquivoForm
+from django.http import HttpResponseRedirect
 
 def index(request):
-    return HttpResponse('<h1>Hello World</h1>')
+    if request.method == 'POST':
+        form = ArquivoForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['arquivo']
+            print(file.name)
+            print(file.size)
+            for line in file.readlines():
+                print(line)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        form = ArquivoForm()
+        return render(request, 'index.html', {'form': form})
