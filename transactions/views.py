@@ -11,7 +11,7 @@ def index(request):
             print(file.size)
             for line in file.readlines():
                 print(line)
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect('.')
     else:
         form = ArquivoForm()
         return render(request, 'index.html', {'form': form})
