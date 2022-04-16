@@ -1,6 +1,8 @@
+from django.forms import ValidationError
 from django.shortcuts import render
 from .forms import ArquivoForm
 from django.http import HttpResponseRedirect
+from django.utils.translation import gettext_lazy as _
 
 def index(request):
     if request.method == 'POST':
@@ -10,8 +12,10 @@ def index(request):
             print(file.name)
             print(file.size)
             for line in file.readlines():
-                print(line)
-            return HttpResponseRedirect('.')
+                print(line)    
+            return HttpResponseRedirect('/')
+
     else:
         form = ArquivoForm()
-        return render(request, 'index.html', {'form': form})
+    
+    return render(request, 'index.html', {'form': form})

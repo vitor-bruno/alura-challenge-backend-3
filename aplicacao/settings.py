@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'aplicacao.urls'
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'aplicacao.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'financas',
+        'NAME': 'alurafinancas',
         'USER': 'postgres',
         'PASSWORD': 'vitinho0110',
         'HOST': 'localhost',
@@ -122,10 +123,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'transactions/static')
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'aplicacao/static')
+]
 
-#Arquivos de mídia
-MEDIA_ROOT = os.path.join(BASE_DIR, '/transactions/media')
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'transactions/media')
 MEDIA_URL = '/media/'
 
 # Default primary key field type
