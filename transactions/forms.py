@@ -19,3 +19,6 @@ class ArquivoForm(forms.ModelForm):
 
         elif not arquivo.name.endswith('.csv'):
             raise ValidationError(_('Formato de arquivo inválido.'))
+
+        elif Arquivo.objects.filter(arquivo__exact='arquivos/' + arquivo.name):
+            raise ValidationError(_('Um arquivo para essa data já consta na base de dados'))
