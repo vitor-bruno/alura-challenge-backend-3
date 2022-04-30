@@ -1,0 +1,41 @@
+<!-- ##### Header Area Start ##### -->
+<header class="header-area">
+
+    <!-- Navbar Area -->
+    <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
+        
+        <div class="navbar-brand">
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-data">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        {% if user.is_authenticated %}
+
+        <div id="navbar-data" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="{% url 'index' %}">Página Principal</a>
+      
+            <a class="navbar-item" href="{% url 'imports' %}">Importações</a>
+            
+            <a class="navbar-item" href="{% url 'usuarios' %}">Usuários</a>
+            
+          </div>
+          
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-dark" href="{% url 'logout' %}"><strong>Logout</strong></a>
+              </div>
+            </div>
+          </div>
+          
+        {% endif %}
+
+        </div>
+    </nav>
+
+</header>
+<!-- ##### Header Area End ##### -->

@@ -1,0 +1,48 @@
+{% extends 'head.html' %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+
+<section class="section">
+    <div class="container">
+
+        <h1 class="title has-text-centered">Usuários Cadastrados</h1>
+        
+        {% include 'partials/_messages.html' %}
+
+        <a href="{% url 'cadastro' %}" type='button' class='button is-link'>Novo Usuário</a>
+        
+        <table class="table is-fullwidth">
+            <thead>
+            <tr>
+                <td style="font-weight: bold">ID</td>
+                <td style="font-weight: bold">NOME</td>
+                <td style="font-weight: bold">EMAIL</td>
+                <td style="font-weight: bold">AÇÕES</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.first_name }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>
+                        <a href="{% url 'edita_usuario' usuario.id %}" type='button' class='button is-info'>Editar</a>
+                        
+                        {% if not usuario == user %}
+                        
+                        <a href="{% url 'deleta_usuario' usuario.id %}" type='button' class='button is-danger'>Remover</a>
+
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

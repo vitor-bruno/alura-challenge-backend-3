@@ -1,27 +1,20 @@
+{% extends 'head.html' %}
 {% load static %}
+{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>Importação de Transações</title>
-</head>
-<body>
+{% include 'partials/_menu.html' %}
+
 <section class="section">
     <div class="container">
+        
         <h1 class="title">Importar Transações</h1>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="notification is-{{ message.tags }}" role="alert">
-                    <button class="delete"></button>
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+        
+        {% include 'partials/_messages.html' %}
+
         <form action="" method="post" enctype="multipart/form-data">
+            
             {% csrf_token %}
+            
             <div class="field">
                 <div class="file is-info has-name" id="fileInput">
                     <label class="file-label">
@@ -39,43 +32,25 @@
                         </span>
                     </label>
                 </div>
+                
                 {% if form.non_field_errors %}
                     <p class = "help is-danger">{{ form.non_field_errors.0 | escape }}</p>    
                 {% endif %}
+
             </div>
+            
             <div class="field">
                 <div class="control">
                     <button class="button is-primary">Importar</button>
                 </div>
             </div>
-        </form>
-    </div>
-</section>
 
-<section class="section">
-    <div class="container">
-        <h1 class="title has-text-centered">Importações Realizadas</h1>
-        <table class="table is-fullwidth">
-            <thead>
-            <tr>
-                <td style="font-weight: bold">Data da Importação</td>
-                <td style="font-weight: bold">Data das Transações</td>
-            </tr>
-            </thead>
-            <tbody>
-            {% for importacao in importacoes %}
-                <tr>
-                    <td>{{ importacao.criado_em }}</td>
-                    <td>{{ importacao.data_transacoes }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        </form>
     </div>
 </section>
 
 <script src="{% static 'js/fileInput.js' %}"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-</html>
+
+{% endblock %}

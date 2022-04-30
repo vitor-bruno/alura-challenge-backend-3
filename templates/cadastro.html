@@ -1,0 +1,41 @@
+{% extends 'head.html' %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+
+<section class="section">
+    <div class="container">
+        
+        <h1 class="title">Cadastro de Usuário</h1>
+        
+        {% include 'partials/_messages.html' %}
+
+        <form action="{% url 'cadastro' %}" method="post" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+            
+            <div class="field">
+                <label class="label">Nome</label>
+                    <div class="control">
+                        <input class="input" type="text" name="nome" required>
+                    </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="email" required>
+                    </div>
+            </div>
+            
+            <div class="field">
+                <div class="control">
+                    <button class="button is-link">Cadastrar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+{% endblock %}

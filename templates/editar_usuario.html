@@ -1,0 +1,43 @@
+{% extends 'head.html' %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+
+<section class="section">
+    <div class="container">
+        
+        <h1 class="title">Edição do Usuário {{ usuario.first_name }}</h1>
+        
+        {% include 'partials/_messages.html' %}
+
+        <form action="{% url 'atualiza_usuario' %}" method="post" enctype="multipart/form-data">
+            
+            {% csrf_token %}
+            
+            <input type="text" id="usuario_id" class="form-control" name="usuario_id" value="{{usuario.id}}" hidden>
+
+            <div class="field">
+                <label class="label">Nome</label>
+                    <div class="control">
+                        <input class="input" type="text" name="nome" value="{{usuario.first_name}}" required>
+                    </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="email" value="{{usuario.email}}" required>
+                    </div>
+            </div>
+            
+            <div class="field">
+                <div class="control">
+                    <button class="button is-link">Atualizar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'head.html' %}
+{% block content %}
+
+{% include 'partials/_menu.html' %}
+
+<section class="section">
+    <div class="container">
+
+        <h1 class="title has-text-centered">Importações Realizadas</h1>
+        <table class="table is-fullwidth">
+            <thead>
+            <tr>
+                <td style="font-weight: bold">Data da Importação</td>
+                <td style="font-weight: bold">Data das Transações</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for importacao in importacoes %}
+                <tr>
+                    <td>{{ importacao.criado_em }}</td>
+                    <td>{{ importacao.data_transacoes }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
