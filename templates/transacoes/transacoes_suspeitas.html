@@ -1,0 +1,134 @@
+{% extends 'head.html' %}
+{% block content %}
+{% load humanize %}
+{% load i18n %}
+
+{% include 'partials/_menu.html' %}
+
+<section class="section">
+    <div class="container">
+
+        <h1 class="title has-text-centered">Análise de Transações Suspeitas</h1>
+
+        <form method="POST" action="{% url 'transacoes_suspeitas' %}">
+            {% csrf_token %}
+            
+            <div class="field is-grouped is-grouped-centered">
+                <label class="label">Selecione o mês para analisar as transações</label>
+            </div>
+            
+            <div class="field is-grouped is-grouped-centered">
+                <div class="select">
+                    {{ form.data }}
+                </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-centered">
+                <div class="control">
+                    <button class="button is-primary">Realizar Análise</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        {% if transacoes %}
+        <h1 class="title has-text-centered">Transações Suspeitas</h1>
+        <table class="table is-fullwidth is-bordered has-text-centered is-striped">
+            <thead>
+            <tr>
+                <th style="font-weight: bold" colspan="3">Origem</th>
+                <th style="font-weight: bold" colspan="3">Destino</th>
+                <th class = "is-vcentered" style="font-weight: bold" rowspan="2">Valor</th>
+            </tr>
+
+            <tr>
+                <th style="font-weight: bold">Banco</th>
+                <th style="font-weight: bold">Agência</th>
+                <th style="font-weight: bold">Conta</th>
+                <th style="font-weight: bold">Banco</th>
+                <th style="font-weight: bold">Agência</th>
+                <th style="font-weight: bold">Conta</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+
+            {% for transacao in transacoes %}
+                <tr>
+                    <td>{{ transacao.banco_origem }}</td>
+                    <td>{{ transacao.agencia_origem }}</td>
+                    <td>{{ transacao.conta_origem }}</td>
+                    <td>{{ transacao.banco_destino }}</td>
+                    <td>{{ transacao.agencia_destino }}</td>
+                    <td>{{ transacao.conta_destino }}</td>
+                    <td>R$ {{ transacao.valor | intcomma }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if contas %}
+        <h1 class="title has-text-centered">Contas Suspeitas</h1>
+        <table class="table is-fullwidth has-text-centered is-striped">
+            <thead>
+            <tr>
+                <th style="font-weight: bold">Banco</th>
+                <th style="font-weight: bold">Agência</th>
+                <th style="font-weight: bold">Conta</th>
+                <th style="font-weight: bold">Valor Movimentado</th>
+                <th style="font-weight: bold">Tipo de Movimentação</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+
+            {% for conta in contas %}
+                <tr>
+                    <td>{{ conta.banco }}</td>
+                    <td>{{ conta.agencia }}</td>
+                    <td>{{ conta.conta }}</td>
+                    <td>R$ {{ conta.soma | intcomma }}</td>
+                    <td>{{ conta.tipo }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if agencias %}
+        <h1 class="title has-text-centered">Agências Suspeitas</h1>
+        <table class="table is-fullwidth has-text-centered is-striped">
+            <thead>
+            <tr>
+                <th style="font-weight: bold">Banco</th>
+                <th style="font-weight: bold">Agência</th>
+                <th style="font-weight: bold">Valor Movimentado</th>
+                <th style="font-weight: bold">Tipo de Movimentação</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+
+            {% for agencia in agencias %}
+                <tr>
+                    <td>{{ agencia.banco }}</td>
+                    <td>{{ agencia.agencia }}</td>
+                    <td>R$ {{ agencia.soma | intcomma }}</td>
+                    <td>{{ agencia.tipo }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

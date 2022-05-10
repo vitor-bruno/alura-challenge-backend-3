@@ -6,8 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Arquivo(models.Model):
     arquivo = models.FileField(upload_to='arquivos/')
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
+    data_upload = models.DateTimeField(auto_now_add=True)
     data_transacoes = models.DateField(null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -27,10 +26,9 @@ class Transacao(models.Model):
     banco_destino = models.CharField(max_length=30, null=False, blank=False)
     agencia_destino = models.CharField(max_length=10, null=False, blank=False)
     conta_destino = models.CharField(max_length=20, null=False, blank=False)
-    valor = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
+    valor = models.DecimalField(max_digits=15, decimal_places=2, null=False, blank=False)
     data_hora = models.DateTimeField(null=False, blank=False)
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
+    data_upload = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if Transacao.objects.filter(banco_origem__exact=self.banco_origem,

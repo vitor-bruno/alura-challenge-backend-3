@@ -1,7 +1,11 @@
 from django import forms
-from .models import Arquivo
 from django.core.exceptions import ValidationError
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
 from django.utils.translation import gettext_lazy as _
+from babel.dates import format_date
+
+from .models import Arquivo, Transacao
 
 class ArquivoForm(forms.ModelForm):
     class Meta:
@@ -22,3 +26,11 @@ class ArquivoForm(forms.ModelForm):
 
         elif Arquivo.objects.filter(arquivo__exact='arquivos/' + arquivo.name).exists():
             raise ValidationError(_('Um arquivo para essa data já consta na base de dados'))
+
+
+class AnaliseForm(forms.Form):
+    query = Transacao.objects.annotate(mes=TruncMonth('data_hora')).values('mes').annotate(count=Count('id')).order_by('mes')
+    meses = [(mes['mes'], format_date(mes['mes'], 'MMMM/yyyy').title()) for mes in query]
+
+    data = forms.ChoiceField(label="Selecione o mês para analisar as transações", choices=meses)
+

@@ -19,6 +19,8 @@
             <a class="navbar-item" href="{% url 'index' %}">Página Principal</a>
       
             <a class="navbar-item" href="{% url 'imports' %}">Importações</a>
+
+            <a class="navbar-item" href="{% url 'transacoes_suspeitas' %}">Transações Suspeitas</a>
             
             <a class="navbar-item" href="{% url 'usuarios' %}">Usuários</a>
             
@@ -26,6 +28,10 @@
           
           <div class="navbar-end">
             <div class="navbar-item">
+              <div class="navbar-item">
+                <p>Usuário conectado: {{user.first_name}}</p>
+              </div>
+
               <div class="buttons">
                 <a class="button is-dark" href="{% url 'logout' %}"><strong>Logout</strong></a>
               </div>

@@ -1,5 +1,6 @@
 {% extends 'head.html' %}
 {% block content %}
+{% load humanize %}
 
 {% include 'partials/_menu.html' %}
 
@@ -9,7 +10,7 @@
         <h1 class="title">Detalhes da Importação</h1>
 
         <p><strong>Importado por:</strong> {{importacao.usuario.first_name}}</p>
-        <p><strong>Data da importação:</strong> {{importacao.criado_em}}</p>
+        <p><strong>Data da importação:</strong> {{importacao.data_upload}}</p>
         <p><strong>Data das transações:</strong> {{importacao.data_transacoes}}</p>
 
         <h1 class="title has-text-centered">Transações Importadas</h1>
@@ -39,7 +40,7 @@
                     <td>{{ transacao.banco_destino }}</td>
                     <td>{{ transacao.agencia_destino }}</td>
                     <td>{{ transacao.conta_destino }}</td>
-                    <td>{{ transacao.valor }}</td>
+                    <td>R$ {{ transacao.valor | intcomma }}</td>
                 </tr>
             {% endfor %}
 

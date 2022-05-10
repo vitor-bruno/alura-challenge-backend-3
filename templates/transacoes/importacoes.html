@@ -20,7 +20,7 @@
 
             {% for importacao in importacoes %}
                 <tr>
-                    <td>{{ importacao.criado_em }}</td>
+                    <td>{{ importacao.data_upload }}</td>
                     <td>{{ importacao.data_transacoes }}</td>
                     <td>{{ importacao.usuario.first_name }}</td>
                     <td><a href="{% url 'detalha_transacoes' importacao.id %}" class="button is-info">Detalhar</a></td>

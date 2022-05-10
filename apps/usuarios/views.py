@@ -54,6 +54,9 @@ def cadastro(request):
     return render(request, 'usuarios/cadastro.html')
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST':
         email = request.POST['email']
         senha = request.POST['senha']
@@ -71,6 +74,8 @@ def login(request):
                     auth.login(request, user)
                     messages.success(request, 'Login realizado com sucesso')
                     return redirect('index')
+                
+                messages.error(request, 'Senha incorreta, tente novamente')
             
             else:
                 messages.error(request, 'Usuário desativado, fale com um administrador para reativar sua conta')
