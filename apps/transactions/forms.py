@@ -17,11 +17,11 @@ class ArquivoForm(forms.ModelForm):
 
     def clean(self):
         arquivo = self.cleaned_data.get('arquivo')
-
+        
         if not arquivo:
             raise ValidationError(_('O arquivo importado está vazio'))
 
-        elif not arquivo.name.endswith('.csv'):
+        elif not (arquivo.name.endswith('.csv') or arquivo.name.endswith('.xml')):
             raise ValidationError(_('Formato de arquivo inválido.'))
 
         elif Arquivo.objects.filter(arquivo__exact='arquivos/' + arquivo.name).exists():
@@ -29,8 +29,9 @@ class ArquivoForm(forms.ModelForm):
 
 
 class AnaliseForm(forms.Form):
-    query = Transacao.objects.annotate(mes=TruncMonth('data_hora')).values('mes').annotate(count=Count('id')).order_by('mes')
-    meses = [(mes['mes'], format_date(mes['mes'], 'MMMM/yyyy').title()) for mes in query]
+    def meses():
+        query = Transacao.objects.annotate(mes=TruncMonth('data_hora')).values('mes').annotate(count=Count('mes')).order_by('mes')
+        return [(mes['mes'], format_date(mes['mes'], 'MMMM/yyyy').title()) for mes in query]
 
-    data = forms.ChoiceField(label="Selecione o mês para analisar as transações", choices=meses)
+    data = forms.ChoiceField(label="Selecione o mês para analisar as transações", choices=meses())
 

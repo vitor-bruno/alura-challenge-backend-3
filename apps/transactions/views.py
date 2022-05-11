@@ -1,9 +1,10 @@
 import csv
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.db.models import Sum, F, Value, Count
+from django.db.models import Sum, F, Value
 from django.db.models.functions import TruncMonth
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -19,33 +20,15 @@ def index(request):
         form = ArquivoForm(request.POST, request.FILES)
 
         if form.is_valid():
-            file = request.FILES['arquivo'].read().decode('utf-8')
-            main_date = date_from_file_line(file, 0)
-            errors = 0
+            invalidas = 0
+            
+            if request.FILES['arquivo'].name.endswith('.csv'):
+                salvar_transacoes_csv(request, form)
 
-            instance = form.save(commit=False)
-            instance.data_transacoes = main_date
-            instance.usuario = request.user
-            instance.save()
-            messages.success(request, 'Arquivo salvo com sucesso!')
+            else:
+                salvar_transacoes_xml(request, form)
 
-            for row in csv.reader(file.splitlines(), delimiter=','):
-                if (not row) or (row[-1][:10] != main_date) or ('' in row):
-                    continue
-                
-                try:
-                    data_hora = datetime.strptime(row[7], '%Y-%m-%dT%H:%M:%S')
-
-                    Transacao.objects.create(arquivo=instance, banco_origem=row[0].title(),
-                                                agencia_origem=row[1], conta_origem=row[2],
-                                                banco_destino=row[3].title(), agencia_destino=row[4],
-                                                conta_destino=row[5], valor=float(row[6]), data_hora=data_hora)
-
-                except ValidationError as e:
-                    errors += 1
-
-            if errors:
-                messages.warning(request, f'{errors} transações já constam no banco de dados e foram ignoradas')
+            
 
             return redirect('index')
 
@@ -91,8 +74,65 @@ def analise_transacoes(request):
     return render(request, 'transacoes/transacoes_suspeitas.html', { 'form' : AnaliseForm() })
 
 
-def date_from_file_line(file, line):
-    return file.splitlines()[line].split(',')[-1][:10]
+def salvar_arquivo(request, form, data):
+    instance = form.save(commit=False)
+    instance.data_transacoes = data
+    instance.usuario = request.user
+    instance.save()
+    messages.success(request, 'Arquivo salvo com sucesso!')
+    return instance
+
+def salvar_transacoes_csv(request, form):
+    arquivo = request.FILES['arquivo'].read().decode('utf-8')
+    primeira_data = arquivo.splitlines()[0].split(',')[-1][:10]
+    invalidas = 0
+
+    instance = salvar_arquivo(request, form, primeira_data)
+
+    for transacao in csv.reader(arquivo.splitlines(), delimiter=','):
+        if (not transacao) or (transacao[-1][:10] != primeira_data) or ('' in transacao):
+            continue
+        
+        try:
+            data_hora = datetime.strptime(transacao[7], '%Y-%m-%dT%H:%M:%S')
+
+            Transacao.objects.create(arquivo=instance, banco_origem=transacao[0].title(),
+                                        agencia_origem=transacao[1], conta_origem=transacao[2],
+                                        banco_destino=transacao[3].title(), agencia_destino=transacao[4],
+                                        conta_destino=transacao[5], valor=float(transacao[6]), data_hora=data_hora)
+
+        except ValidationError:
+            invalidas += 1
+
+    if invalidas:
+        messages.warning(request, f'{invalidas} transações já constam no banco de dados e foram ignoradas')
+
+def salvar_transacoes_xml(request, form):
+    arquivo = request.FILES['arquivo']
+    transacoes = ET.parse(arquivo).getroot()
+    primeira_data = transacoes[0][-1].text[:10]
+    invalidas = 0
+    
+    instance = salvar_arquivo(request, form, primeira_data)
+
+    for transacao in transacoes:
+        if (not transacao) or (transacao[-1].text[:10] != primeira_data) or ('' in transacao):
+            continue
+        
+        try:
+            data_hora = datetime.strptime(transacao[-1].text, '%Y-%m-%dT%H:%M:%S')
+
+            Transacao.objects.create(arquivo=instance, banco_origem=transacao[0][0].text.title(),
+                                        agencia_origem=transacao[0][1].text, conta_origem=transacao[0][2].text,
+                                        banco_destino=transacao[1][0].text.title(), agencia_destino=transacao[1][1].text,
+                                        conta_destino=transacao[1][2].text, valor=float(transacao[2].text), data_hora=data_hora)
+
+        except ValidationError:
+            invalidas += 1
+    
+    if invalidas:
+        messages.warning(request, f'{invalidas} transações já constam no banco de dados e foram ignoradas')
+
 
 def transacoes_suspeitas(transacoes):
     return transacoes.filter(valor__gte=100000).order_by('-valor')
