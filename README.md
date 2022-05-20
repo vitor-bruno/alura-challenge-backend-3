@@ -50,4 +50,5 @@ Só tenho a agradecer à comunidade da Alura pelo desafio, sei que foi extremame
 
 <div align="center">
 <img width=250 height=250 src="https://user-images.githubusercontent.com/71675056/168167233-f49f2d22-280f-4b94-969c-dfdc5930fccb.png">
+<img width=250 height=250 src="https://user-images.githubusercontent.com/71675056/169566763-64de57c1-6de8-462e-b74e-155ddc650cf3.png">
 </div>
