@@ -1,5 +1,6 @@
 from decouple import config
 from pathlib import Path
+import django_on_heroku
 import os
 import sys
 
@@ -160,3 +161,5 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 # Pasta do projeto
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
+
+django_on_heroku.settings(locals())
