@@ -70,6 +70,10 @@
 
             </tbody>
         </table>
+
+        {% else %}
+        <h1 class="subtitle has-text-centered">Sem transações suspeitas no período buscado</h1>
+
         {% endif %}
 
         {% if contas %}
@@ -99,6 +103,10 @@
 
             </tbody>
         </table>
+        
+        {% else %}
+        <h1 class="subtitle has-text-centered">Sem contas suspeitas no período buscado</h1>
+
         {% endif %}
 
         {% if agencias %}
@@ -126,6 +134,10 @@
 
             </tbody>
         </table>
+        
+        {% else %}
+        <h1 class="subtitle has-text-centered">Sem agências suspeitas no período buscado</h1>
+
         {% endif %}
 
     </div>
