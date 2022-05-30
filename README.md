@@ -4,13 +4,13 @@
 </h1>
 
 <div align="center">
-<img src="https://img.shields.io/badge/Python-3.9-success?style=flat-square">
-<img src="https://img.shields.io/badge/Django-4.0-informational?style=flat-square">
-<img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-brightgreen?style=flat-square">
+<img src="https://img.shields.io/badge/Python-3.9-success?style=for-the-badge">
+<img src="https://img.shields.io/badge/Django-4.0-informational?style=for-the-badge">
+<img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-brightgreen?style=for-the-badge">
 </div>
 
 <h3>
-  <p align="center">Alura Challenges | Desafio Back-End 3ª Edição</p>
+  <p align="center">Alura Challenge | Desafio Back-End 3ª Edição</p>
 </h3>
 
 Projeto desenvolvido como parte da 3ª edição de desafios Back-End da Alura, ao longo dos meses de abril e maio/2022
@@ -19,12 +19,30 @@ Realizei a construção de uma aplicação web completa com suporte para upload 
 
 A lógica da aplicação se baseia na análise de transações importadas por usuários cadastrados em arquivos CSV ou XML, visando detectar operações suspeitas seguindo as regras de negócio definidas pelo desafio.
 
+## Acessando a aplicação
+
+O deploy da aplicação foi realizado através do Heroku e você pode conferir o resultado [aqui](https://alura-challenge-backend-3.herokuapp.com/)!
+
+Usuário padrão:
+ - Login: admin@email.com.br
+ - Senha: 123999
+
 ## Funcionalidades
 
  - `Controle de Acesso:` CRUD de usuários com funcionalidades de Login, Logout, Cadastro e Exclusão de contas de usuário
  - `Upload de arquivos:` Suporte para arquivos CSV ou XML contendo dados de transações financeiras
  - `Armazenamento em banco de dados:` Persistência em Banco de Dados SQL
  - `Transações Suspeitas:` Análise das transações importadas em busca de operações consideradas suspeitas
+
+## Como funciona?
+
+- `Login:` Somente usuários logados podem acessar o sistema, fazer upload de arquivos e gerar análises.
+- `Cadastro:` Apenas usuários existentes podem cadastrar novos usuários, os quais receberão uma senha por e-mail para acessar a aplicação
+- `Upload de arquivos:` Usuários logados podem enviar arquivos detalhando transações financeiras através da página inicial, e visualizar as importações já realizadas na aba "Importações"
+- `Análise:` Pode ser realizada na aba "Transações Suspeitas", selecionando um mês para filtrar. São consideradas suspeitas:
+  - Transações acima de R$100.000
+  - Contas bancárias que enviarem ou receberem R$1.000.000 ou mais no mesmo mês
+  - Agências bancárias que enviarem ou receberem R$1.000.000.000 ou mais no mesmo mês
 
 ## Ferramentas e Tecnologias utilizadas
 
