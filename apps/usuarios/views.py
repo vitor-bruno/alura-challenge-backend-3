@@ -131,7 +131,7 @@ def atualiza_usuario(request):
         user.save()
         messages.success(request, 'Alterações realizadas com sucesso!')
 
-        return redirect('usuarios/usuarios')
+        return redirect('usuarios')
 
 
 def enviar_email(destinatario, nome, senha):
