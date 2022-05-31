@@ -28,10 +28,14 @@ class ArquivoForm(forms.ModelForm):
             raise ValidationError(_('Um arquivo para essa data já consta na base de dados'))
 
 
-class AnaliseForm(forms.Form):
-    def meses():
-        query = Transacao.objects.annotate(mes=TruncMonth('data_hora')).values('mes').annotate(count=Count('mes')).order_by('mes')
-        return [(mes['mes'], format_date(mes['mes'], 'MMMM/yyyy').title()) for mes in query]
+class MyModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return format_date(obj['mes'], 'MMMM/yyyy', locale='pt_BR').title()
 
-    data = forms.ChoiceField(label="Selecione o mês para analisar as transações", choices=meses())
+
+class AnaliseForm(forms.Form):
+    query = Transacao.objects.annotate(mes=TruncMonth('data_hora')).values('mes').annotate(count=Count('mes')).order_by('mes').values('mes')
+
+    data = MyModelChoiceField(label="Selecione o mês para analisar as transações", queryset=query)
+
 

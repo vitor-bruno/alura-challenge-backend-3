@@ -59,7 +59,8 @@ def analise_transacoes(request):
         return redirect('login')
 
     if request.method == 'POST':
-        mes_selecionado = request.POST['data']
+        mes_selecionado =  datetime(*eval(request.POST['data'].replace("'", "\"")[25:-1]))
+
         transacoes_mes = Transacao.objects.annotate(mes=TruncMonth('data_hora')).filter(mes=mes_selecionado)
 
         contexto = {
