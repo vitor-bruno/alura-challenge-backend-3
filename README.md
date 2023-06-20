@@ -19,14 +19,6 @@ Realizei a construção de uma aplicação web completa com suporte para upload 
 
 A lógica da aplicação se baseia na análise de transações importadas por usuários cadastrados em arquivos CSV ou XML, visando detectar operações suspeitas seguindo as regras de negócio definidas pelo desafio.
 
-## Acessando a aplicação
-
-O deploy da aplicação foi realizado através do Heroku e você pode conferir o resultado [aqui](https://alura-challenge-backend-3.herokuapp.com/)!
-
-Usuário padrão:
- - Login: admin@email.com.br
- - Senha: 123999
-
 ## Funcionalidades
 
  - `Controle de Acesso:` CRUD de usuários com funcionalidades de Login, Logout, Cadastro e Exclusão de contas de usuário
